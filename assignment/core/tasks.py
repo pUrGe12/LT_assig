@@ -9,7 +9,7 @@ def new_upload_task(save_file):
 	with pdfplumber.open(save_file) as pdf:
 		first_page = pdf.pages[0]
 		for i in first_page.chars:
-			company += i.get("text", "").strip()
+			company += i.get("text", "").strip()	# case sensitivity doesn't matter
 
 	print(f"This is the company name: {company}")
 	return company
