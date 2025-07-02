@@ -12,11 +12,6 @@ def get_open_members(company_name):
 	if public_members_url:
 		PM_API_URL = public_members_url.split("{")[0]	# Assuming the URL doesn't have { anywhere else otherwise things may get awkward
 		response = json.loads(requests.get(PM_API_URL).text)
-
-		for member in response:
-			print(member)
-	
 	else:
-		reponse = ""			# hard luck
-
+		reponse = [] # hard luck means empty list
 	return response
