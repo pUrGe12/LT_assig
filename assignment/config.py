@@ -3,7 +3,12 @@ from pathlib import Path
 
 
 base_dir = Path.cwd()
-web_dir = base_dir / "web"
+web_dir = base_dir / "assignment/web"
+
+print(f'This is the web_dir: {web_dir}')
+
+class HueyPaths:
+	broker_db = base_dir / ".data/broker.db"
 
 class WebPaths:
 	upload_html = web_dir / "templates/upload.html"
@@ -18,3 +23,4 @@ class WebDirs:
 class Config:
 	path = WebPaths()
 	dirs = WebDirs()
+	huey = HueyPaths()

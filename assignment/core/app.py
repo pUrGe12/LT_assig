@@ -3,8 +3,10 @@ from werkzeug.utils import secure_filename
 import os
 import uuid
 
-from config import Config
+from assignment.config import Config
+from assignment.core.tasks import new_upload_task
 
+print(f"This is templates_dir: {Config.dirs.templates_dir}")
 app = Flask(__name__, template_folder = Config.dirs.templates_dir, static_folder = Config.dirs.static_dir)
 app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # Keeping a 16 MB limit
@@ -36,14 +38,16 @@ def upload_file():
         file_ext = os.path.splitext(filename)[1]
         save_filename = f"{unique_id}{file_ext}"
         save_path = os.path.join(app.config["UPLOAD_FOLDER"], save_filename)
+        
+        # Eventually, I might not have to save the pdf because it doesn't really matter, but i will keep this for now
         os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
         file.save(save_path)
 
         # Returning a uuid once the upload is finished
-        # Later will use huey for processing and queuing
+        new_upload_task(save_path)             # huey task for processing in the backgroud using a huey consumer. (assuming I can spawn multiple processes on render)
         return jsonify({"id": unique_id}), 200
 
     return jsonify({"error": "Invalid file type"}), 400
 
-if __name__ == "__main__":
+def run():
     app.run(debug=True, host="0.0.0.0", port=5000)
