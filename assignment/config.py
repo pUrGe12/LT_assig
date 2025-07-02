@@ -5,8 +5,6 @@ from pathlib import Path
 base_dir = Path.cwd()
 web_dir = base_dir / "assignment/web"
 
-print(f'This is the web_dir: {web_dir}')
-
 class HueyPaths:
 	broker_db = base_dir / ".data/broker.db"
 

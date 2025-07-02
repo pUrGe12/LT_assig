@@ -6,7 +6,6 @@ import uuid
 from assignment.config import Config
 from assignment.core.tasks import new_upload_task
 
-print(f"This is templates_dir: {Config.dirs.templates_dir}")
 app = Flask(__name__, template_folder = Config.dirs.templates_dir, static_folder = Config.dirs.static_dir)
 app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # Keeping a 16 MB limit
@@ -45,6 +44,7 @@ def upload_file():
 
         # Returning a uuid once the upload is finished
         new_upload_task(save_path)             # huey task for processing in the backgroud using a huey consumer. (assuming I can spawn multiple processes on render)
+        # We don't need its value here
         return jsonify({"id": unique_id}), 200
 
     return jsonify({"error": "Invalid file type"}), 400
