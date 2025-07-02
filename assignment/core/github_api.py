@@ -20,6 +20,3 @@ def get_open_members(company_name):
 		reponse = ""			# hard luck
 
 	return response
-
-
-get_open_members("owasp")

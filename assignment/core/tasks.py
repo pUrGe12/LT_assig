@@ -1,5 +1,6 @@
 import pdfplumber
 from assignment.core.utils.huey_config import huey
+from assignment.core.github_api import get_open_members
 
 @huey.task(retries=3, retry_delay=2)
 def new_upload_task(save_file):
@@ -12,5 +13,8 @@ def new_upload_task(save_file):
 			company += i.get("text", "").strip()	# case sensitivity doesn't matter
 
 	print(f"This is the company name: {company}")
-	return company
+
+	response = get_open_members(company)
+	print(f"I am getting this response: {response}")
+	return response
 	# This is where the processing logic should be
