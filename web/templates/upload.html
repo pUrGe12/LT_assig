@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Upload PDF{% endblock %}
+
+{% block content %}
+<form id="uploadForm" class="upload-form">
+  <label for="pdfInput" class="upload-label">
+    <span>Select a PDF</span>
+    <input id="pdfInput" type="file" name="pdf" accept="application/pdf" required />
+  </label>
+  <button type="submit" class="btn">Upload</button>
+</form>
+<div id="result" class="result-box"></div>
+{% endblock %}
