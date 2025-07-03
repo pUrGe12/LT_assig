@@ -1,6 +1,10 @@
 # Usage
 
-### For running locally (if you want to see the database files itself)
+This is the render website: https://assignment-m5gm.onrender.com/
+
+It works, only to show the UI. I need to run huey_consumer in the background, which I cannot do on render without paying up (to run background workers, we need to pay). The huey_consumer is essential for non-blocking and queuing. I could have done `immediate=True` with huey and that would elimanate the need for the consumer, but that will mean no schelduling and log status. It depends on what is required honestly.
+
+### For running locally (if you want to see the database files itself and the full functionality)
 
 1. Install poetry
 
