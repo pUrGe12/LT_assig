@@ -31,7 +31,6 @@ def parse(extracted_pdf):
             HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE
         })
 
-        # Sometimes the model acts up...
         if not response:
             raise ValueError("No response received")
 
@@ -42,10 +41,7 @@ def parse(extracted_pdf):
         json_list = re.findall("@@@json.*@@@", output, re.DOTALL)
         json_val = re.findall("{.*}", json_list[0].strip(), re.DOTALL)[0].strip()
     
-        # have the number of companies and the compnay usernames nicely as a json
         return json5.loads(json_val)
 
     except Exception as e:
-        # Probably exceeded quota
-        print("This shouldn't happen: {}".format(e))
         return 'Try again'

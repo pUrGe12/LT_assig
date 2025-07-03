@@ -1,7 +1,3 @@
-# I plan on using apsw cause I like that and I have used it for nettacker.
-# One function to add to database created by sqlite.py at the start of the program
-# optional: to query the database, after a completed job and return the data
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -62,12 +58,10 @@ def send_submit_query(session):
 		for _ in range(1, 100):
 			try:
 				session.commit()
-				print("Commited!")
 				return True
 			except Exception:
 				time.sleep(0.1)
 	except Exception:		# bad news
-		print("hit exception")
 		return False
 	return False
 
@@ -88,5 +82,4 @@ def insert_into_db_logs(pdf_name, company_name, response):
 		)
 	)
 
-	print("i have added")
 	return send_submit_query(session)
