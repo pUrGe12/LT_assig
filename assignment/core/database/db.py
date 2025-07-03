@@ -10,7 +10,7 @@ def extract_github_members_list(response):
 	return_list = []
 	for member in response:
 		login = member.get("login", "")
-		id_ = member.get("id", "")
+		id_ = int(member.get("id", ""))
 		node_id = member.get("node_id", "")
 
 		return_list.append(GitHubMember(login=login, id=id_, node_id=node_id))
@@ -57,29 +57,35 @@ def send_submit_query(session):
 	try:
 		for _ in range(1, 100):
 			try:
+				print("trying")
 				session.commit()
+				print("commited")
 				return True
-			except Exception:
+			except Exception as e:
+				print(f"hitting: {e}")
 				time.sleep(0.1)
-	except Exception:		# bad news
+	except Exception as e:		# bad news
+		print(f"hitting this: {e}")
 		return False
 	return False
 
 
 
-def insert_into_db_logs(pdf_name, company_name, response):
+def insert_into_db_logs(id_, pdf_name, company_name, response):
 	assert isinstance(response, list)	# Making sure that I always pass only a json.loads() output here
 
 	github_members_list = extract_github_members_list(response)		# Ideally there should be a seperate file for helper fucntiosn but I guess its not too bad
 
+	print("i am inside here")
 	session = create_connection()
 	session.add(
 		Logs(
+			id = id_,
 			pdf_name = pdf_name,
 			company_name = company_name,
 			timestamp = datetime.utcnow(),	# The current timestamp as they mentioned
 			members = github_members_list
 		)
 	)
-
+	print("added")
 	return send_submit_query(session)

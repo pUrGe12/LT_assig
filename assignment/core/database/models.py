@@ -11,7 +11,7 @@ class Logs(Base):
 
 	__tablename__ = "github_results"
 
-	id = Column(Integer, primary_key=True, autoincrement = True)
+	id = Column(String, primary_key=True)
 	pdf_name = Column(String, nullable=False)  # original PDF filename
 	company_name = Column(String, nullable=False)  # extracted from PDF
 	timestamp = Column(DateTime)
@@ -27,11 +27,11 @@ class GitHubMember(Base):
 
 	# The metadata I need and I am defining
 	id = Column(Integer, primary_key=True)		# The main sort of id
-	node_id = Column(Integer, nullable=False)	# another sort of id 
+	node_id = Column(String, nullable=False)	# another sort of id 
 	login = Column(String, nullable=False)	# Some variant of a username accorind go the API
 	# can add more here as and when needed
 
-	log_id = Column(Integer, ForeignKey("github_results.id"))
+	log_id = Column(String, ForeignKey("github_results.id"))
 
 	# Basically a primarykey foreign key thingie.
 	log = relationship("Logs", back_populates="members")

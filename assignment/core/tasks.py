@@ -6,7 +6,7 @@ from assignment.core.gemini.parser import parse
 
 
 @huey.task(retries=3, retry_delay=2)
-def new_upload_task(save_file):
+def new_upload_task(id_, save_file):
 	with pdfplumber.open(save_file) as pdf:
 		extracted_text = ""
 		pages = pdf.pages
@@ -22,7 +22,8 @@ def new_upload_task(save_file):
 	for company in companies_list:
 		response = get_open_members(company)
 		if response:
-			insert_into_db_logs(pdf_name=save_file, company_name=company, response=response)
+			insert_into_db_logs(id_=id_, pdf_name=save_file, company_name=company, response=response)
+			print("passes to instert")
 		else: # hard luck
 			return None
 

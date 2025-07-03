@@ -17,6 +17,7 @@ model = genai.GenerativeModel('gemini-2.5-pro')
 chat = model.start_chat(history=[])
 
 def parse(extracted_pdf):
+    print('inside here')
 
     prompt = parsing_prompt + f"""
     These are the contents of the pdf: {extracted_pdf}
@@ -40,7 +41,8 @@ def parse(extracted_pdf):
 
         json_list = re.findall("@@@json.*@@@", output, re.DOTALL)
         json_val = re.findall("{.*}", json_list[0].strip(), re.DOTALL)[0].strip()
-    
+        
+        print(f"returning: {json_val}")
         return json5.loads(json_val)
 
     except Exception as e:

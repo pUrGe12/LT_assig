@@ -43,7 +43,7 @@ def upload_file():
         file.save(save_path)
 
         # Returning a uuid once the upload is finished
-        new_upload_task(save_path)             # huey task for processing in the backgroud using a huey consumer. (assuming I can spawn multiple processes on render)
+        new_upload_task(unique_id, save_path)             # huey task for processing in the backgroud using a huey consumer. (assuming I can spawn multiple processes on render)
         # We don't need its value here
         return jsonify({"id": unique_id}), 200
 
