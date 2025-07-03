@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: flask-web
+    env: python
+    buildCommand: poetry install
+    startCommand: poetry run python3 -m assignment.core.app
+    plan: free
+    envVars:
+      - key: API_KEY
+        sync: false
+
+  - type: worker
+    name: huey-worker
+    env: python
+    buildCommand: poetry install
+    startCommand: huey_consumer assignment.core.tasks.huey
+    plan: free
+    envVars:
+      - key: API_KEY
+        sync: false
