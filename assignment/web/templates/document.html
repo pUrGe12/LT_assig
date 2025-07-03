@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Document {{ doc_id }}{% endblock %}
+
+{% block content %}
+<h2>Company: {{ data.company_name }}</h2>
+<p><strong>Uploaded PDF:</strong> {{ data.pdf_name }}</p>
+<p><strong>Timestamp:</strong> {{ data.timestamp }}</p>
+
+<h3>GitHub Members:</h3>
+{% if data.members %}
+  <ul>
+    {% for member in data.members %}
+      <li>
+        <strong>{{ member.login }}</strong> (node_id: {{ member.node_id }})
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No GitHub members found.</p>
+{% endif %}
+{% endblock %}

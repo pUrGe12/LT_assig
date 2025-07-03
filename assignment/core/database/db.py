@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
-
+import time
 from assignment.config import Config
 from assignment.core.database.models import Logs, GitHubMember
 
@@ -13,7 +13,7 @@ def extract_github_members_list(response):
 		id_ = int(member.get("id", ""))
 		node_id = member.get("node_id", "")
 
-		return_list.append(GitHubMember(login=login, id=id_, node_id=node_id))
+		return_list.append(GitHubMember(login=login, github_id=id_, node_id=node_id))
 	return return_list
 
 
@@ -89,3 +89,29 @@ def insert_into_db_logs(id_, pdf_name, company_name, response):
 	)
 	print("added")
 	return send_submit_query(session)
+
+
+def fetch_from_id(id_):
+	session = create_connection()
+
+	log = session.query(Logs).filter(Logs.id == id_).first()
+
+	if not log:
+		return None
+
+	# Convert related GitHub members to dicts
+	members_data = []
+	for member in log.members:
+		members_data.append({
+			"id": member.id,
+			"node_id": member.node_id,
+			"login": member.login,
+		})
+
+	return {
+		"id": log.id,
+		"pdf_name": log.pdf_name,
+		"company_name": log.company_name,
+		"timestamp": log.timestamp.isoformat() if log.timestamp else None,
+		"members": members_data
+	}

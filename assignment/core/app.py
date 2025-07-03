@@ -5,6 +5,7 @@ import uuid
 
 from assignment.config import Config
 from assignment.core.tasks import new_upload_task
+from assignment.core.database.db import fetch_from_id
 
 app = Flask(__name__, template_folder = Config.dirs.templates_dir, static_folder = Config.dirs.static_dir)
 app.config["UPLOAD_FOLDER"] = "uploads"
@@ -48,6 +49,15 @@ def upload_file():
         return jsonify({"id": unique_id}), 200
 
     return jsonify({"error": "Invalid file type"}), 400
+
+@app.route("/<_id>")
+def document_page(_id):
+    result = fetch_from_id(_id)
+
+    if result is None:
+        abort(404)      # Here we can show the scan progress!
+
+    return render_template("document.html", doc_id=_id, data=result)
 
 def run():
     app.run(debug=True, host="0.0.0.0", port=5000)

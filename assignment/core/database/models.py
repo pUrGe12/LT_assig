@@ -26,7 +26,8 @@ class GitHubMember(Base):
 	__tablename__ = "github_members"
 
 	# The metadata I need and I am defining
-	id = Column(Integer, primary_key=True)		# The main sort of id
+	id = Column(Integer, primary_key=True, autoincrement=True)		# The keeping track id
+	github_id = Column(Integer, nullable=False) # The main sort of id
 	node_id = Column(String, nullable=False)	# another sort of id 
 	login = Column(String, nullable=False)	# Some variant of a username accorind go the API
 	# can add more here as and when needed
