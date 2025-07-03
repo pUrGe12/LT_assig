@@ -62,10 +62,12 @@ def send_submit_query(session):
 		for _ in range(1, 100):
 			try:
 				session.commit()
+				print("Commited!")
 				return True
 			except Exception:
 				time.sleep(0.1)
 	except Exception:		# bad news
+		print("hit exception")
 		return False
 	return False
 
@@ -81,8 +83,10 @@ def insert_into_db_logs(pdf_name, company_name, response):
 		Logs(
 			pdf_name = pdf_name,
 			company_name = company_name,
-			timestamp = datatime.utcnow(),	# The current timestamp as they mentioned
+			timestamp = datetime.utcnow(),	# The current timestamp as they mentioned
 			members = github_members_list
 		)
 	)
+
+	print("i have added")
 	return send_submit_query(session)

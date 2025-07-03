@@ -3,3 +3,4 @@ uploads/*
 assignment/__pycache__
 assignment/core/__pycache__
 __pycache__
+.env
